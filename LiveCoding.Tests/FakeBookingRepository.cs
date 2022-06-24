@@ -1,25 +1,26 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LiveCoding.Domain;
 using LiveCoding.Persistence;
 
 namespace LiveCoding.Tests;
 
 public class FakeBookingRepository : IBookingRepository
 {
-    private readonly List<BookingData> _bookings = new();
+    private readonly List<Booking> _bookings = new();
 
-    public IEnumerable<BookingData> GetUpcomingBookings()
+    public IEnumerable<Booking> GetUpcomingBookings()
     {
         return _bookings;
     }
 
-    public BookingData GetUpcomingBooking(DateTime date)
+    public Booking GetUpcomingBooking(DateTime date)
     {
         return _bookings.First(r => r.Date == date);
     }
 
-    public void Save(BookingData booking)
+    public void Save(Booking booking)
     {
         _bookings.Add(booking);
     }

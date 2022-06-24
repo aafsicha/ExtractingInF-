@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using LiveCoding.Api.Controllers;
+using LiveCoding.Domain;
 using LiveCoding.Persistence;
 using LiveCoding.Services;
 using NFluent;
@@ -16,10 +17,7 @@ namespace LiveCoding.Tests
             var indoorBarName = "Bar La Belle Equipe";
             var indoorBars = new[]
             {
-                ABar() with
-                {
-                    Name = indoorBarName, Open = new[] { DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday }
-                }
+                new Bar(indoorBarName, new Capacity(10), new[] { DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday })
             };
             var devData = new[]
             {
@@ -43,7 +41,7 @@ namespace LiveCoding.Tests
         {
             var indoorBars = new[]
             {
-                ABar() with { Open = new[] { DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday } }
+                new Bar("indoorBarName", new Capacity(10), new[] { DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday })
             };
             var developers = new[]
             {
@@ -66,8 +64,8 @@ namespace LiveCoding.Tests
             var indoorBarName = "Bar La Belle Equipe";
             var indoorBars = new[]
             {
-                ABar() with { Name = indoorBarName, Open = new[] { DayOfWeek.Thursday } },
-                ABar() with { Name = "Le Sirius", Open = new[] { DayOfWeek.Friday } }
+                new Bar(indoorBarName, new Capacity(10), new[] { DayOfWeek.Thursday }),
+                new Bar("Le Sirius", new Capacity(10), new[] { DayOfWeek.Friday })
             };
             var developers = new[]
             {
@@ -88,8 +86,8 @@ namespace LiveCoding.Tests
         {
             var indoorBars = new[]
             {
-                ABar() with { Name = "La belle équipe", Open = new[] { DayOfWeek.Thursday } },
-                ABar() with { Name = "Le Sirius", Open = new[] { DayOfWeek.Friday } }
+                new Bar("La belle équipe", new Capacity(10), new[] { DayOfWeek.Thursday }),
+                new Bar("Le Sirius", new Capacity(10), new[] { DayOfWeek.Friday })
             };
             var developers = new[]
             {
@@ -108,7 +106,7 @@ namespace LiveCoding.Tests
         {
             var indoorBars = new[]
             {
-                ABar() with { Capacity = 3 }
+                new Bar("La belle équipe", new Capacity(3), new[] { DayOfWeek.Thursday }),
             };
             var developers = new[]
             {
@@ -124,17 +122,17 @@ namespace LiveCoding.Tests
             Check.That(success).IsFalse();
         }
 
-        private static BookingController BuildController(BarData[] barData, DevData[] devData)
+        private static BookingController BuildController(Bar[] barData, DevData[] devData)
         {
             var bookingRepository = new FakeBookingRepository();
             return new BookingController(new BookingService(new FakeBarRepository(barData),
                 new FakeDevRepository(devData), bookingRepository), bookingRepository);
         }
 
-        private static BarData ABar() => new(
-            Name: "Wallace Pub",
-            Capacity: 10,
-            Open: new[] { DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday }
+        private static Bar ABar() => new(
+            "Wallace Pub",
+             new Capacity(10),
+            new[] { DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday }
         );
 
 

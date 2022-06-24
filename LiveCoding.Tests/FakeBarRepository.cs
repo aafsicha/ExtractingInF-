@@ -1,19 +1,20 @@
 using System.Collections.Generic;
 using System.Linq;
+using LiveCoding.Domain;
 using LiveCoding.Persistence;
 
 namespace LiveCoding.Tests;
 
 public class FakeBarRepository : IBarRepository
 {
-    private readonly IEnumerable<BarData> _bars;
+    private readonly IEnumerable<Bar> _bars;
 
-    public FakeBarRepository(BarData[] barDatas)
+    public FakeBarRepository(Bar[] barDatas)
     {
         _bars = barDatas;
     }
 
-    public IEnumerable<BarData> Get()
+    public IEnumerable<Bar> Get()
     {
         return _bars;
     }

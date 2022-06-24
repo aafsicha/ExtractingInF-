@@ -1,4 +1,5 @@
-﻿using LiveCoding.Persistence;
+﻿using LiveCoding.Domain;
+using LiveCoding.Persistence;
 
 namespace LiveCoding.Services
 {
@@ -19,7 +20,7 @@ namespace LiveCoding.Services
 
         public bool ReserveBar()
         {
-            var bars = _barRepo.Get();
+            var bars = _barRepo.Get().ToList();
             var devs = _devRepo.Get().ToList();
 
             var numberOfAvailableDevsByDate = new Dictionary<DateTime, int>();
@@ -47,12 +48,12 @@ namespace LiveCoding.Services
 
             var bestDate = numberOfAvailableDevsByDate.First(kv => kv.Value == maxNumberOfDevs).Key;
 
-            foreach (var barData in bars)
+            foreach (var bar in bars)
             {
-                if (barData.Capacity >= maxNumberOfDevs && barData.Open.Contains(bestDate.DayOfWeek))
+                if (bar.Capacity.Value >= maxNumberOfDevs && bar.OpenedDays.Contains(bestDate.DayOfWeek))
                 {
-                    BookBar(barData.Name, bestDate);
-                    _bookingRepository.Save(new BookingData() { Bar = barData, Date = bestDate });
+                    BookBar(bar.Name, bestDate);
+                    _bookingRepository.Save(new Booking(bar, bestDate));
                     return true;
                 }
             }

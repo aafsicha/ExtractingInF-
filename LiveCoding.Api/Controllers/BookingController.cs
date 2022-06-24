@@ -1,3 +1,4 @@
+using LiveCoding.Domain;
 using LiveCoding.Persistence;
 using LiveCoding.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ namespace LiveCoding.Api.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<BookingData> Get()
+        public IEnumerable<Booking> Get()
         {
             return _bookingRepository.GetUpcomingBookings();
         }
