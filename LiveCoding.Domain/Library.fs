@@ -18,14 +18,21 @@ type Booking = {
     Date : DateTime
 }
 
+type Dev = {
+    Name : string
+    OnSite : DateTime[]
+}
+
 type IBarRepository =
     abstract member Get : unit -> IEnumerable<Bar>
+type IDevRepository =
+    abstract member Get : unit -> IEnumerable<Dev>
 type IBookingRepository =
     abstract member GetUpcomingBookings : unit -> IEnumerable<Booking>
     abstract member Save : Booking -> unit
     
-module Bar =
-    let book bar date =
+module BarFunctions =
+    let book (bar:Bar) (date:DateTime) =
         printfn "Bar booked: %s at %s" bar.Name (date.ToString())
 
     

@@ -13,3 +13,4 @@ public class BarRepository : IBarRepository
         return bars.Select(c => new Bar(c.Name, new Capacity(c.Capacity), c.Open));
     }
 }
+public record BarData(string Name, int Capacity, DayOfWeek[] Open);

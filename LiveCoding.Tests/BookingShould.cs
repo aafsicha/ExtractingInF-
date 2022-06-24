@@ -21,11 +21,11 @@ namespace LiveCoding.Tests
             };
             var devData = new[]
             {
-                new DevData { Name = "Alice", OnSite = new[] { Wednesday, Thursday, Friday } },
-                new DevData { Name = "Bob", OnSite = new[] { Thursday } },
-                new DevData { Name = "Chad", OnSite = new[] { Friday } },
-                new DevData { Name = "Dan", OnSite = new[] { Wednesday, Thursday } },
-                new DevData { Name = "Eve", OnSite = new[] { Thursday } },
+                new Dev("Bob",new[] { Wednesday, Thursday, Friday }),
+                new Dev("Chad",new[] { Thursday }),
+                new Dev("Dan",new[] { Friday }),
+                new Dev("Eve",new[] { Wednesday, Thursday }),
+                new Dev("Alice",new[] { Thursday }),
             };
 
             var controller = BuildController(indoorBars, devData);
@@ -45,11 +45,11 @@ namespace LiveCoding.Tests
             };
             var developers = new[]
             {
-                new DevData { Name = "Alice", OnSite = new[] { Wednesday, Friday } },
-                new DevData { Name = "Bob", OnSite = new[] { Thursday } },
-                new DevData { Name = "Chad", OnSite = new[] { Friday } },
-                new DevData { Name = "Dan", OnSite = new[] { Wednesday } },
-                new DevData { Name = "Eve", OnSite = new[] { Thursday } },
+                new Dev("Bob",new[] { Wednesday, Friday }),
+                new Dev("Chad",new[] { Thursday }),
+                new Dev("Dan",new[] { Friday }),
+                new Dev("Eve",new[] { Wednesday }),
+                new Dev("Alice",new[] { Thursday }),
             };
 
             var controller = BuildController(indoorBars, developers);
@@ -69,8 +69,8 @@ namespace LiveCoding.Tests
             };
             var developers = new[]
             {
-                new DevData { Name = "Bob", OnSite = new[] { Thursday } },
-                new DevData { Name = "Alice", OnSite = new[] { Thursday } }
+                new Dev("Dan",new[] { Thursday }),
+                new Dev("Eve",new[] { Thursday }),
             };
 
             var controller = BuildController(indoorBars, developers);
@@ -91,8 +91,8 @@ namespace LiveCoding.Tests
             };
             var developers = new[]
             {
-                new DevData { Name = "Bob", OnSite = new[] { Wednesday } },
-                new DevData { Name = "Alice", OnSite = new[] { Wednesday } }
+                new Dev("Bob",new[] { Wednesday }),
+                new Dev("Alice",new[] { Wednesday }),
             };
 
             var controller = BuildController(indoorBars, developers);
@@ -110,10 +110,10 @@ namespace LiveCoding.Tests
             };
             var developers = new[]
             {
-                new DevData { Name = "Bob", OnSite = new[] { Wednesday, Friday } },
-                new DevData { Name = "Chad", OnSite = new[] { Wednesday } },
-                new DevData { Name = "Dan", OnSite = new[] { Wednesday } },
-                new DevData { Name = "Eve", OnSite = new[] { Wednesday } },
+                new Dev("Bob",new[] { Wednesday, Friday }),
+                new Dev("Chad",new[] { Wednesday }),
+                new Dev("Dan",new[] { Wednesday }),
+                new Dev("Eve",new[] { Wednesday }),
             };
 
             var controller = BuildController(indoorBars, developers);
@@ -122,7 +122,7 @@ namespace LiveCoding.Tests
             Check.That(success).IsFalse();
         }
 
-        private static BookingController BuildController(Bar[] barData, DevData[] devData)
+        private static BookingController BuildController(Bar[] barData, Dev[] devData)
         {
             var bookingRepository = new FakeBookingRepository();
             return new BookingController(new BookingService(new FakeBarRepository(barData),
