@@ -2,7 +2,6 @@
 
 open System
 open System.Collections.Generic
-
 type Capacity = {
     Value : int
     }
@@ -32,7 +31,18 @@ type IBookingRepository =
     abstract member Save : Booking -> unit
     
 module BarFunctions =
-    let book (bar:Bar) (date:DateTime) =
+    let bookAt (bar:Bar) (date:DateTime) =
         printfn "Bar booked: %s at %s" bar.Name (date.ToString())
-
+        {Bar = bar; Date = date}
+    let hasEnoughCapacityFor (bar: Bar) (nbDevs:int) =
+        bar.Capacity.Value >= nbDevs
+    let isOpenedOn (bar: Bar) (day: DayOfWeek) =
+        Array.contains day bar.OpenedDays
     
+    let bookBarIfPossible (bars: Bar list) (nbDevs:int) (bestDate:DateTime) : Option<Booking> =
+        let availableBars = bars
+                            |> List.filter (fun bar -> isOpenedOn bar bestDate.DayOfWeek)
+                            |> List.filter (fun bar -> hasEnoughCapacityFor bar nbDevs)
+        match availableBars with
+        | [] -> None
+        | _ -> Some (bookAt availableBars.Head bestDate)

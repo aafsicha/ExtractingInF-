@@ -1,4 +1,5 @@
 ﻿using LiveCoding.Domain;
+using Microsoft.FSharp.Collections;
 
 namespace LiveCoding.Services
 {
@@ -36,19 +37,18 @@ namespace LiveCoding.Services
             return Book(bars, maxNumberOfDevs, bestDate);
         }
 
-        private bool Book(List<Bar> bars, int maxNumberOfDevs, DateTime bestDate)
+        private bool Book(List<Bar> bars, int nbDevs, DateTime bestDate)
         {
-            foreach (var bar in bars)
+            var maybeBooking = BarFunctions.bookBarIfPossible(ListModule.OfSeq(bars), nbDevs, bestDate);
+            try
             {
-                if (bar.Capacity.Value >= maxNumberOfDevs && bar.OpenedDays.Contains(bestDate.DayOfWeek))
-                {
-                    BarFunctions.book(bar, bestDate);
-                    _bookingRepository.Save(new Booking(bar, bestDate));
-                    return true;
-                }
+                _bookingRepository.Save(maybeBooking.Value);
+                return true;
             }
-
-            return false;
+            catch (NullReferenceException e)
+            {
+                return false;
+            }
         }
 
         private static Dictionary<DateTime, int> NumberOfAvailableDevsByDate(List<Dev> devs)
