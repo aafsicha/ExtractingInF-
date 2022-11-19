@@ -8,3 +8,5 @@ What i want to see is:
 - is it easy to inteop a f# domain inside a fully fledge c# app
 - is the end result of the f# domain any clearer than the c# one
 - could it be a way make a team pivot towards f# ?
+
+<a rel="me" href="https://mas.to/@sicha">Mastodon</a>
